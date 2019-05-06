@@ -3,8 +3,9 @@
 
 from datetime import timedelta
 
-from odoo import fields
 from .test_automatic_workflow_base import TestAutomaticWorkflowBase
+
+from odoo import fields
 from odoo.tests import tagged
 
 
@@ -92,9 +93,11 @@ class TestAutomaticWorkflow(TestAutomaticWorkflowBase):
     def test_journal_on_invoice(self):
         sale_journal = self.env['account.journal'].search(
             [('type', '=', 'sale')], limit=1)
-        new_sale_journal = self.env['account.journal'].create({"name": "TTSA",
-                                                               "code": "TTSA",
-                                                               "type": "sale"})
+        new_sale_journal = self.env['account.journal'].create({
+            "name": "TTSA",
+            "code": "TTSA",
+            "type": "sale"
+        })
         workflow = self.create_full_automatic()
         sale = self.create_sale_order(workflow)
         sale._onchange_workflow_process_id()
