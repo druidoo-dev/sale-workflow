@@ -51,6 +51,10 @@ class SaleOrder(models.Model):
                 vals.update({"incoterm": order_type.incoterm_id})
             if vals:
                 order.update(vals)
+            if order_type.route_id:
+                order.order_line.write({"route_id": order_type.route_id.id})
+            else:
+                order.order_line.write({"route_id": False})
 
     @api.model
     def create(self, vals):
@@ -66,4 +70,15 @@ class SaleOrder(models.Model):
             res["journal_id"] = self.type_id.journal_id.id
         if self.type_id:
             res["sale_type_id"] = self.type_id.id
+        return res
+
+
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    @api.onchange("product_id")
+    def product_id_change(self):
+        res = super(SaleOrderLine, self).product_id_change()
+        if self.order_id.type_id.route_id:
+            self.update({"route_id": self.order_id.type_id.route_id})
         return res

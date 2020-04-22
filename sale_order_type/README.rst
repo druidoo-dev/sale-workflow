@@ -55,6 +55,8 @@ Usage
    type you have created before and all settings will be propagated.
 #. You can also define a type for a particular partner if you go to *Sales &
    Purchases* and set a sale order type.
+#. Add Route in Sales orders Types. When we change the sale order type, if it
+   has a route_id set, it should also change the route_id of the lines.
 
 Bug Tracker
 ===========
