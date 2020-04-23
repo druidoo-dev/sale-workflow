@@ -51,10 +51,7 @@ class SaleOrder(models.Model):
                 vals.update({"incoterm": order_type.incoterm_id})
             if vals:
                 order.update(vals)
-            if order_type.route_id:
-                order.order_line.write({"route_id": order_type.route_id.id})
-            else:
-                order.order_line.write({"route_id": False})
+            order.order_line.update({"route_id": order_type.route_id.id})
 
     @api.model
     def create(self, vals):
